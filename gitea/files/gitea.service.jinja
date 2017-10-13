@@ -1,0 +1,17 @@
+{%- from "gitea/map.jinja" import gitea with context -%}
+[Unit]
+Description=Gitea (A painless self-hosted Git service)
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User={{ gitea.user }}
+Group={{ gitea.user }}
+WorkingDirectory={{ gitea.install_dir }}
+ExecStart={{ gitea.install_dir }}/gitea web -c {{ gitea.conf_file }}
+Restart=always
+Environment=USER={{ gitea.user }} HOME={{ gitea.home_dir }}
+
+[Install]
+WantedBy=multi-user.target

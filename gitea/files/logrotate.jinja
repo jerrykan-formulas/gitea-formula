@@ -1,5 +1,5 @@
-{%- from "gogs/map.jinja" import gogs with context -%}
-{{ gogs.logs_dir }}/*.log {
+{%- from "gitea/map.jinja" import gitea with context -%}
+{{ gitea.logs_dir }}/*.log {
     daily
     missingok
     rotate 10

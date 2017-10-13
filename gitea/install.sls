@@ -1,22 +1,22 @@
-{%- from "gogs/map.jinja" import gogs with context -%}
+{%- from "gitea/map.jinja" import gitea with context -%}
 
-gogs-package-deps:
+gitea-package-deps:
   pkg.installed:
     - name: git
 
-gogs-binary-dir:
+gitea-binary-dir:
   file.directory:
-    - name: {{ gogs.install_dir }}
+    - name: {{ gitea.install_dir }}
 
-gogs-binary-package:
+gitea-binary-package:
   archive.extracted:
-    - name: {{ gogs.install_dir }}
-    - source: {{ gogs.binary_archive }}
-{%- if gogs.binary_archive_hash %}
-    - source_hash: {{ gogs.binary_archive_hash }}
+    - name: {{ gitea.install_dir }}
+    - source: {{ gitea.binary_archive }}
+{%- if gitea.binary_archive_hash %}
+    - source_hash: {{ gitea.binary_archive_hash }}
 {%- endif %}
     - archive_format: tar
-    - if_missing: {{ gogs.install_dir }}/gogs
+    - if_missing: {{ gitea.install_dir }}/gitea
 {%- if salt['grains.get']('saltversioninfo') < [2014, 7, 1] %}
     # leading space and trailing dash are required for salt <2014.7.1
     - tar_options: ' --strip-components=1 -'
@@ -27,36 +27,36 @@ gogs-binary-package:
     - enforce_toplevel: False
 {%- endif %}
     - require:
-      - file: gogs-binary-dir
+      - file: gitea-binary-dir
 
-gogs-user:
+gitea-user:
   user.present:
-    - name: {{ gogs.user }}
-    - home: {{ gogs.home_dir }}
+    - name: {{ gitea.user }}
+    - home: {{ gitea.home_dir }}
     - createhome: False
     - shell: /bin/bash
     - system: True
 
 {# TODO: conditional based on init system?? -#}
-gogs-systemd-file:
+gitea-systemd-file:
   file.managed:
-    - name: /etc/systemd/system/gogs.service
-    - source: salt://gogs/files/gogs.service.jinja
+    - name: /etc/systemd/system/gitea.service
+    - source: salt://gitea/files/gitea.service.jinja
     - template: jinja
 
-gogs-service:
+gitea-service:
   service.running:
-    - name: gogs
+    - name: gitea
     - enable: True
     - require:
-      - file: gogs-systemd-file
-      - user: gogs-user
+      - file: gitea-systemd-file
+      - user: gitea-user
 
-gogs-restart:
+gitea-restart:
   module.wait:
     - name: service.restart
-    - m_name: gogs
+    - m_name: gitea
     - require:
-      - service: gogs-service
+      - service: gitea-service
     - watch:
-      - archive: gogs-binary-package
+      - archive: gitea-binary-package

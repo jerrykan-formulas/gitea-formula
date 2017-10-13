@@ -1,0 +1,17 @@
+{%- import_yaml "gitea/defaults.yaml" as defaults -%}
+
+{# Set some default "non-static" default values #}
+{%- do defaults.gitea.update({
+    'conf_file': '{0}/app.ini'.format(salt['pillar.get'](
+        'gitea:lookup:conf_dir', defaults.gitea.conf_dir)
+    ),
+}) -%}
+
+{# Don't use the default hash if the default binary source is not being used #}
+{%- if salt['pillar.get']('gitea:lookup:binary_archive', None) -%}
+    {%- do defaults.gitea.update({
+        'binary_archive_hash': '',
+    })-%}
+{%- endif -%}
+
+{%- set gitea = salt['pillar.get']('gitea:lookup', defaults.gitea, merge=True) -%}

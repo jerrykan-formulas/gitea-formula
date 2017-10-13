@@ -1,16 +1,16 @@
-{%- from "gogs/map.jinja" import gogs with context -%}
+{%- from "gitea/map.jinja" import gitea with context -%}
 
-{%- set config = salt['pillar.get']('gogs:config', {}) -%}
+{%- set config = salt['pillar.get']('gitea:config', {}) -%}
 
-{%- set data_dir = config.get('server_app_data_path', gogs.data_dir) -%}
+{%- set data_dir = config.get('server_app_data_path', gitea.data_dir) -%}
 {%- set db_type = config.get('db_type', 'sqlite3') -%}
 
-APP_NAME = {{ config.get('app_name', 'Gogs: Go Git Service') }}
-RUN_USER = {{ config.get('run_user', gogs.user) }}
+APP_NAME = {{ config.get('app_name', 'Gitea: Git with a cup of tea') }}
+RUN_USER = {{ config.get('run_user', gitea.user) }}
 RUN_MODE = {{ config.get('run_mode', 'prod') }}
 
 [repository]
-ROOT = {{ config.get('repository_root', gogs.repo_root_dir) }}
+ROOT = {{ config.get('repository_root', gitea.repo_root_dir) }}
 FORCE_PRVATE = {{ config.get('repository_force_private', 'false')|lower }}
 
 [server]
@@ -21,7 +21,7 @@ ROOT_URL = {{ config.server_root_url }}
 {%- endif %}
 HTTP_ADDR = {{ config.get('server_http_addr', '0.0.0.0') }}
 HTTP_PORT = {{ config.get('server_http_port', '3000') }}
-{%- if 'server_local_root_url' in gogs %}
+{%- if 'server_local_root_url' in gitea %}
 LOCAL_ROOT_URL = {{ config.server_local_root_url }}
 {%- endif %}
 
@@ -41,13 +41,13 @@ PASSWD = {{ config.db_pass }}
 SSL_MODE = {{ config.get('db_ssl_mode', 'disable')  }}
 {%- endif %}
 {%- else %}
-PATH = {{ config.get('sqlite_db_file', data_dir ~ '/gogs.db') }}
+PATH = {{ config.get('sqlite_db_file', data_dir ~ '/gitea.db') }}
 {%- endif %}
 
 [security]
 INSTALL_LOCK = true
 SECRET_KEY = {{ config.get('security_secret_key', salt['grains.get_or_set_hash'](
-    'gogs:security_secret_key',
+    'gitea:security_secret_key',
     length=15,
     chars=('abcdefghijklmnopqrstuvwxyz' +
            'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -66,7 +66,7 @@ ENABLE_CAPTCHA = {{ config.get('service_enable_captcha', 'false')|lower }}
 {%- if mailer_enabled %}
 ENABLED = true
 HOST = {{ config.get('mailer_host', 'localhost:25') }}
-FROM = {{ config.get('mailer_from', '"Gogs" <{0}@{1}>'.format(gogs.user, salt['grains.get']('fqdn'))) }}
+FROM = {{ config.get('mailer_from', '"Gogs" <{0}@{1}>'.format(gitea.user, salt['grains.get']('fqdn'))) }}
 USER = {{ config.get('mailer_user', '') }}
 PASSWD = {{ config.get('mailer_passwd', '') }}
 {%- else %}
@@ -86,7 +86,7 @@ ENABLE_FEDERATED_AVATAR = {{ config.get('picture_enable_federated_avatar', 'fals
 PATH = {{ config.get('attachment_path', data_dir ~ '/attachments/') }}
 
 [log]
-ROOT_PATH = {{ config.get('log_root_path', gogs.logs_dir) }}
+ROOT_PATH = {{ config.get('log_root_path', gitea.logs_dir) }}
 MODE = {{ config.get('log_mode', 'file') }}
 LEVEL = {{ config.get('log_level', 'Warn') }}
 
