@@ -1,5 +1,8 @@
 {%- from "gitea/map.jinja" import gitea with context -%}
 
+include:
+  - gitea.user
+
 gitea-package-deps:
   pkg.installed:
     - name: git
@@ -28,14 +31,6 @@ gitea-binary-package:
 {%- endif %}
     - require:
       - file: gitea-binary-dir
-
-gitea-user:
-  user.present:
-    - name: {{ gitea.user }}
-    - home: {{ gitea.home_dir }}
-    - createhome: False
-    - shell: /bin/bash
-    - system: True
 
 {# TODO: conditional based on init system?? -#}
 gitea-systemd-file:

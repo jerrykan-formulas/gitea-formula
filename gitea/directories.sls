@@ -1,7 +1,7 @@
 {%- from "gitea/map.jinja" import gitea with context -%}
 
 include:
-  - gitea
+  - gitea.user
 
 gitea_data_dir:
   file.directory:
