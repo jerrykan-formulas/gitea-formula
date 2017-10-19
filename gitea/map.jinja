@@ -8,9 +8,9 @@
 }) -%}
 
 {# Don't use the default hash if the default binary source is not being used #}
-{%- if salt['pillar.get']('gitea:lookup:binary_archive', None) -%}
+{%- if salt['pillar.get']('gitea:lookup:binary', None) -%}
     {%- do defaults.gitea.update({
-        'binary_archive_hash': '',
+        'binary_hash': '',
     })-%}
 {%- endif -%}
 

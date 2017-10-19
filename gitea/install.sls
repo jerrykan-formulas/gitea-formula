@@ -11,24 +11,14 @@ gitea-binary-dir:
   file.directory:
     - name: {{ gitea.install_dir }}
 
-gitea-binary-package:
-  archive.extracted:
-    - name: {{ gitea.install_dir }}
-    - source: {{ gitea.binary_archive }}
-{%- if gitea.binary_archive_hash %}
-    - source_hash: {{ gitea.binary_archive_hash }}
+gitea-binary:
+  file.managed:
+    - name: {{ gitea.install_dir }}/gitea
+    - source: {{ gitea.binary }}
+{%- if gitea.binary_hash %}
+    - source_hash: {{ gitea.binary_hash }}
 {%- endif %}
-    - archive_format: tar
-    - if_missing: {{ gitea.install_dir }}/gitea
-{%- if salt['grains.get']('saltversioninfo') < [2014, 7, 1] %}
-    # leading space and trailing dash are required for salt <2014.7.1
-    - tar_options: ' --strip-components=1 -'
-{%- elif salt['grains.get']('saltversioninfo') < [2016, 11, 0] %}
-    - tar_options: '--strip-components=1'
-{%- else %}
-    - options: '--strip-components=1'
-    - enforce_toplevel: False
-{%- endif %}
+    - mode: 755
     - require:
       - file: gitea-binary-dir
 
@@ -54,4 +44,4 @@ gitea-restart:
     - require:
       - service: gitea-service
     - watch:
-      - archive: gitea-binary-package
+      - file: gitea-binary

@@ -1,8 +1,8 @@
 gitea:
   user: git
 
-  binary_archive: https://github.com/gogits/gogs/releases/download/v0.9.48/linux_amd64.tar.gz
-  binary_archive_hash: md5=8bb5d291e59bbb2a37ccee9efc5dd877
+  binary: https://dl.gitea.io/gitea/1.2.1/gitea-1.2.1-linux-amd64
+  binary_hash: sha256=83b894e321343e253006e689fb5a4d6fee048cf0fa3a169cb54c4060788133df
 
   install_dir: /opt/gitea
   conf_dir: /etc/gitea
