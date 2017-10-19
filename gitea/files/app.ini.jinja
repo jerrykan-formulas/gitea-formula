@@ -30,6 +30,9 @@ SSH_PORT = {{ config.get('server_ssh_port', 22) }}
 OFFLINE_MODE = {{ config.get('server_offline_mode', 'false')|lower }}
 APP_DATA_PATH = {{ data_dir }}
 
+[indexer]
+ISSUE_INDEXER_PATH = {{ config.get('indexer_issue_indexer_path', data_dir ~ '/indexers/issues.bleve') }}
+
 [database]
 DB_TYPE = {{ db_type }}
 {%- if db_type != 'sqlite3' %}
@@ -52,6 +55,13 @@ SECRET_KEY = {{ config.get('security_secret_key', salt['grains.get_or_set_hash']
     chars=('abcdefghijklmnopqrstuvwxyz' +
            'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
            '12345678790')
+)) }}
+INTERNAL_TOKEN = {{ config.get('security_internal_token', salt['grains.get_or_set_hash'](
+    'gitea:security_secret_key',
+    length=105,
+    chars=('abcdefghijklmnopqrstuvwxyz' +
+           'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+           '12345678790._')
 )) }}
 
 [service]
