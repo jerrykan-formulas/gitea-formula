@@ -6,6 +6,7 @@ gitea:
 
   install_dir: /opt/gitea
   conf_dir: /etc/gitea
+  working_dir: /var/lib/gitea
   home_dir: /var/lib/gitea/home
   data_dir: /var/lib/gitea/data
   logs_dir: /var/log/gitea

@@ -8,7 +8,7 @@ After=network.target
 Type=simple
 User={{ gitea.user }}
 Group={{ gitea.user }}
-WorkingDirectory={{ gitea.install_dir }}
+WorkingDirectory={{ gitea.working_dir }}
 ExecStart={{ gitea.install_dir }}/gitea web -c {{ gitea.conf_file }}
 Restart=always
 Environment=USER={{ gitea.user }} HOME={{ gitea.home_dir }}
