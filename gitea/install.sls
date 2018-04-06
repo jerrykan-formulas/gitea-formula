@@ -17,6 +17,8 @@ gitea-binary:
     - source: {{ gitea.binary }}
 {%- if gitea.binary_hash %}
     - source_hash: {{ gitea.binary_hash }}
+{%- else %}
+    - skip_verify: True
 {%- endif %}
     - mode: 755
     - require:
