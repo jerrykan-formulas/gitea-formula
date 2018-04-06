@@ -7,11 +7,4 @@
     ),
 }) -%}
 
-{# Don't use the default hash if the default binary source is not being used #}
-{%- if salt['pillar.get']('gitea:lookup:binary', None) -%}
-    {%- do defaults.gitea.update({
-        'binary_hash': '',
-    })-%}
-{%- endif -%}
-
 {%- set gitea = salt['pillar.get']('gitea:lookup', defaults.gitea, merge=True) -%}

@@ -5,7 +5,7 @@ gitea:
 
     # source location of gitea binary (could also use salt://)
     binary: https://dl.gitea.io/gitea/1.2.0/gitea-1.2.0-linux-amd64
-    # optional has of the gitea archive to check int
+    # hash of the binary to install, set to '' to disable verifying the binary's hash
     binary_hash: sha256=5380d7cf6ee34f376e44354d47ee5df51a60740fd20ec4d1e55a53d9136a52b9
 
     # install gitea archive into this directory
