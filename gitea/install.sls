@@ -45,3 +45,4 @@ gitea-restart:
       - service: gitea-service
     - watch:
       - file: gitea-binary
+      - file: gitea-systemd-file
