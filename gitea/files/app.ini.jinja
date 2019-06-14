@@ -103,3 +103,13 @@ LEVEL = {{ config.get('log_level', 'Warn') }}
 
 [log.file]
 LOG_ROTATE = {{ config.get('log_file_log_rotate', 'false')|lower }}
+
+[oauth2]
+ENABLED = {{ config.get('oauth2_enabled', 'true')|lower }}
+JWT_SECRET = {{ config.get('oauth2_jwt_secret', salt['grains.get_or_set_hash'](
+    'gitea:oauth2_jwt_secret',
+    length=43,
+    chars=('abcdefghijklmnopqrstuvwxyz' +
+           'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+           '12345678790-_')
+)) }}
